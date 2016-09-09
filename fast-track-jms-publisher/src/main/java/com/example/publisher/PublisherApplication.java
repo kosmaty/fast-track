@@ -1,70 +1,48 @@
 package com.example.publisher;
 
-import javax.jms.ConnectionFactory;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
 import javax.jms.TextMessage;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.jms.annotation.EnableJms;
-import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
-import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
-import org.springframework.jms.support.converter.MessageConverter;
-import org.springframework.jms.support.converter.MessageType;
-
-import com.example.core.Email;
 
 @SpringBootApplication
 @EnableJms
 public class PublisherApplication {
 
-	@Bean
-	public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory,
-			DefaultJmsListenerContainerFactoryConfigurer configurer) {
-		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-		// This provides all boot's default to this factory, including the
-		// message converter
-		configurer.configure(factory, connectionFactory);
-		// You could still override some of Boot's default if necessary.
-		return factory;
-	}
-
-	@Bean // Serialize message content to json using TextMessage
-	public MessageConverter jacksonJmsMessageConverter() {
-		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-		converter.setTargetType(MessageType.TEXT);
-		converter.setTypeIdPropertyName("_type");
-		return converter;
-	}
+	private static final List<String> fruits = Arrays.asList("APPLE", "BANANA", "PEAR", "ANANAS", "PEACH");
 
 	public static void main(String[] args) {
 		// Launch the application
 		ConfigurableApplicationContext context = SpringApplication.run(PublisherApplication.class, args);
-
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		JmsTemplate jmsTemplate = context.getBean(JmsTemplate.class);
-		
+		jmsTemplate.setPubSubDomain(true);
+		Random random = new Random();
 		// Send a message with a POJO - the template reuse the message converter
-		for (int i = 0; i < 10; i++) {
-			System.out.println("Sending an email message.");
-			String type = i % 2 == 0 ? "even" : "odd";
-			String text = "test " + i + " [" + type + "]";
+		for (int i = 0; i < 1000; i++) {
+
+			String fruit = fruits.get(random.nextInt(fruits.size()));
+			double price = random.nextInt(100);
+			String text = fruit + "{price=" + price + ",time=" + dateFormat.format(new Date()) + "}";
+			System.out.println("Sending an email message: " + text);
 			jmsTemplate.send("test-queue", session -> {
 				TextMessage message = session.createTextMessage(text);
-				message.setStringProperty("type", type);
+				message.setStringProperty("type", fruit);
 				return message;
 			});
 
-			// jmsTemplate.convertAndSend("mailbox", new
-			// Email("info@example.com", "Hello"));
 			try {
 				Thread.sleep(1000L);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

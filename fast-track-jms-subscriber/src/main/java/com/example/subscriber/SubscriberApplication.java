@@ -19,24 +19,27 @@ import org.springframework.jms.support.converter.MessageType;
 @EnableJms
 public class SubscriberApplication {
 
-//	@Bean
-//	public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory,
-//			DefaultJmsListenerContainerFactoryConfigurer configurer) {
-//		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-//		// This provides all boot's default to this factory, including the
-//		// message converter
-//		configurer.configure(factory, connectionFactory);
-//		// You could still override some of Boot's default if necessary.
-//		return factory;
-//	}
-//
-//	@Bean // Serialize message content to json using TextMessage
-//	public MessageConverter jacksonJmsMessageConverter() {
-//		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-//		converter.setTargetType(MessageType.TEXT);
-//		converter.setTypeIdPropertyName("_type");
-//		return converter;
-//	}
+	@Bean
+	public JmsListenerContainerFactory<?> myFactory1(ConnectionFactory connectionFactory,
+			DefaultJmsListenerContainerFactoryConfigurer configurer) {
+		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+		configurer.configure(factory, connectionFactory);
+		factory.setPubSubDomain(true);
+		factory.setSubscriptionDurable(true);
+		factory.setClientId("fast-track-receiver1");
+		return factory;
+	}
+
+	@Bean
+	public JmsListenerContainerFactory<?> myFactory2(ConnectionFactory connectionFactory,
+			DefaultJmsListenerContainerFactoryConfigurer configurer) {
+		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+		configurer.configure(factory, connectionFactory);
+		factory.setPubSubDomain(true);
+		factory.setSubscriptionDurable(true);
+		factory.setClientId("fast-track-receiver2");
+		return factory;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(SubscriberApplication.class, args);
