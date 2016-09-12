@@ -8,14 +8,24 @@ import com.example.core.Email;
 @Component
 public class Receiver {
 
-	@JmsListener(destination = "test-queue", containerFactory = "myFactory1", selector = "type = 'APPLE'")
-	public void receiveMessageWithSelector(String message) {
-		System.out.println("Receiver with selector <" + message + ">");
+	@JmsListener(destination = "test-queue", containerFactory = "durableFactory1", selector = "type = 'APPLE'")
+	public void receiveDurableMessageWithSelector(String message) {
+		System.out.println("Durable subscriber with selector <" + message + ">");
 	}
 
-	@JmsListener(destination = "test-queue", containerFactory = "myFactory2")
-	public void receiveMessage(String message) {
-		System.out.println("Receiver <" + message + ">");
+	@JmsListener(destination = "test-queue", containerFactory = "durableFactory2")
+	public void receiveDurableMessage(String message) {
+		System.out.println("Durable subscriber <" + message + ">");
+	}
+
+	@JmsListener(destination = "test-queue", containerFactory = "notDurableTopicFactory")
+	public void receiveNotDurableMessageFromTopic(String message) {
+		System.out.println("Not durable subscriber <" + message + ">");
+	}
+
+	@JmsListener(destination = "test-queue", containerFactory = "queueFactory")
+	public void receiveMessageFromQueue(String message) {
+		System.out.println("Queue subscriber <" + message + ">");
 	}
 
 }

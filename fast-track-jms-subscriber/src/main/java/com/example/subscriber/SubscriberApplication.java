@@ -20,7 +20,7 @@ import org.springframework.jms.support.converter.MessageType;
 public class SubscriberApplication {
 
 	@Bean
-	public JmsListenerContainerFactory<?> myFactory1(ConnectionFactory connectionFactory,
+	public JmsListenerContainerFactory<?> durableFactory1(ConnectionFactory connectionFactory,
 			DefaultJmsListenerContainerFactoryConfigurer configurer) {
 		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
 		configurer.configure(factory, connectionFactory);
@@ -31,13 +31,30 @@ public class SubscriberApplication {
 	}
 
 	@Bean
-	public JmsListenerContainerFactory<?> myFactory2(ConnectionFactory connectionFactory,
+	public JmsListenerContainerFactory<?> durableFactory2(ConnectionFactory connectionFactory,
 			DefaultJmsListenerContainerFactoryConfigurer configurer) {
 		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
 		configurer.configure(factory, connectionFactory);
 		factory.setPubSubDomain(true);
 		factory.setSubscriptionDurable(true);
 		factory.setClientId("fast-track-receiver2");
+		return factory;
+	}
+
+	@Bean
+	public JmsListenerContainerFactory<?> notDurableTopicFactory(ConnectionFactory connectionFactory,
+			DefaultJmsListenerContainerFactoryConfigurer configurer) {
+		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+		configurer.configure(factory, connectionFactory);
+		factory.setPubSubDomain(true);
+		return factory;
+	}
+
+	@Bean
+	public JmsListenerContainerFactory<?> queueFactory(ConnectionFactory connectionFactory,
+			DefaultJmsListenerContainerFactoryConfigurer configurer) {
+		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+		configurer.configure(factory, connectionFactory);
 		return factory;
 	}
 

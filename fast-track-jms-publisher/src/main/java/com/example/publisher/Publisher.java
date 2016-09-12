@@ -25,8 +25,6 @@ public class Publisher {
 
 	@PostConstruct
 	public void send() {
-		System.out.println("is topic: " + jmsTemplate.isPubSubDomain());
-
 		for (int i = 0; i < 1000; i++) {
 
 			String fruit = fruits.get(random.nextInt(fruits.size()));
