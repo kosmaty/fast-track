@@ -1,5 +1,6 @@
 package com.example.subscriber;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,10 @@ public class Receiver {
     @Inject
     private MessagePrinter messagePrinter;
 
+    @Inject
+    @Qualifier("pretty")
+    private MessagePrinter prettyMessagePrinter;
+
     @JmsListener(destination = "test-queue", containerFactory = "durableFactory1", selector = "type = 'APPLE'")
     public void receiveDurableMessageWithSelector(String message) {
         messagePrinter.printMessage("Durable subscriber with selector", message);
@@ -18,7 +23,7 @@ public class Receiver {
 
     @JmsListener(destination = "test-queue", containerFactory = "durableFactory2")
     public void receiveDurableMessage(String message) {
-        messagePrinter.printMessage("Durable subscriber", message);
+        prettyMessagePrinter.printMessage("Durable subscriber", message);
     }
 
     @JmsListener(destination = "test-queue", containerFactory = "notDurableTopicFactory")
