@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 
 @Component
@@ -14,7 +15,10 @@ public class Receiver {
 
     @Inject
     @Qualifier("pretty")
-    private MessagePrinter prettyMessagePrinter;
+    private MessagePrinter somePrettyMessagePrinter;
+
+    @Resource(name = "prettyMessagePrinter")
+    private MessagePrinter anotherPrettyPrinter;
 
     @JmsListener(destination = "test-queue", containerFactory = "durableFactory1", selector = "type = 'APPLE'")
     public void receiveDurableMessageWithSelector(String message) {
@@ -23,7 +27,7 @@ public class Receiver {
 
     @JmsListener(destination = "test-queue", containerFactory = "durableFactory2")
     public void receiveDurableMessage(String message) {
-        prettyMessagePrinter.printMessage("Durable subscriber", message);
+        somePrettyMessagePrinter.printMessage("Durable subscriber", message);
     }
 
     @JmsListener(destination = "test-queue", containerFactory = "notDurableTopicFactory")
@@ -33,7 +37,7 @@ public class Receiver {
 
     @JmsListener(destination = "test-queue", containerFactory = "queueFactory")
     public void receiveMessageFromQueue(String message) {
-        messagePrinter.printMessage("Queue subscriber", message);
+        anotherPrettyPrinter.printMessage("Queue subscriber", message);
     }
 
 }
