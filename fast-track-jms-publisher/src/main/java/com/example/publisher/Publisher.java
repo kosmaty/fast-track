@@ -1,20 +1,5 @@
 package com.example.publisher;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.*;
-
-import javax.annotation.PostConstruct;
-import javax.jms.TextMessage;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import com.example.core.FruitValuation;
 import com.example.core.FruitValuations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +10,16 @@ import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.jms.TextMessage;
+import javax.xml.transform.stream.StreamSource;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 @Component
 public class Publisher {
@@ -47,44 +42,24 @@ public class Publisher {
 
     private Iterator<FruitValuation> data;
 
-
-//    @Scheduled(fixedRate = 1000L)
-
     @PostConstruct
-    public void initData() {
-        URL resource = this.getClass().getResource("com/example/publisher/valuations.xml");
-
+    public void initData() throws Exception {
         try (InputStream in = valuationsSource.getInputStream()) {
             FruitValuations valuations = (FruitValuations) unmarshaller.unmarshal(new StreamSource(in));
             data = valuations.getValuations().iterator();
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
-        while (data.hasNext()) {
-            sendFruitValuationMessage(data.next());
-            waitASecond();
-        }
-
     }
 
-    public void sendFruitValuationMessage(FruitValuation fv) {
+    @Scheduled(fixedRate = 1000L)
+    public void sendFruitValuationMessage() {
+        FruitValuation fv = data.next();
         String text = String.format("%s {price=%f,time=%s",
-                fv.getFruitType(), fv.getPrice(), dateFormat.format(new Date()));
+                fv.getFruitType(), fv.getPrice(), dateFormat.format(fv.getTime()));
         System.out.println("Sending a message: " + text);
         jmsTemplate.send("test-queue", session -> {
             TextMessage message = session.createTextMessage(text);
             message.setStringProperty("type", fv.getFruitType());
             return message;
         });
-    }
-
-    private void waitASecond() {
-        try {
-            Thread.sleep(1000L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
