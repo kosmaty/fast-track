@@ -1,18 +1,28 @@
 package com.example.core;
 
-/**
- * Created by kyko on 9/15/2016.
- */
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class FruitValuation {
+    @XmlAttribute
     private String fruitType;
+    @XmlAttribute
     private double price;
+    @XmlAttribute
+    private Date time;
 
     public FruitValuation() {
     }
 
-    public FruitValuation(String fruitType, double price) {
+    public FruitValuation(String fruitType, double price, Date time) {
         this.fruitType = fruitType;
         this.price = price;
+        this.time = time;
     }
 
 
@@ -30,5 +40,13 @@ public class FruitValuation {
 
     public void setFruitType(String fruitType) {
         this.fruitType = fruitType;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 }
