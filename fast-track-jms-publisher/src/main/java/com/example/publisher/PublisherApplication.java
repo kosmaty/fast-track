@@ -21,7 +21,7 @@ public class PublisherApplication {
 	@Bean
 	public JmsTemplate myJmsTemplate(ConnectionFactory connectionFactory) {
 		JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
-		jmsTemplate.setPubSubDomain(false);
+		jmsTemplate.setPubSubDomain(true);
 		return jmsTemplate;
 	}
 

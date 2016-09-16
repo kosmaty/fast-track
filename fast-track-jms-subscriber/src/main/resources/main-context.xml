@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <import resource="classpath:secondary-config.xml"/>
+
+    <bean id="messagePrinter" class="com.example.subscriber.MessagePrinter" factory-method="simplePrinter"/>
+    <bean id="prettyMessagePrinter" class="com.example.subscriber.PrettyMessagePrinter" factory-method="prettyPrinter">
+        <qualifier value="pretty"/>
+    </bean>
+
+    <bean id="receiver" class="com.example.subscriber.Receiver" init-method="sayHello">
+        <constructor-arg index="0" ref="messagePrinter"/>
+        <constructor-arg index="1" ref="prettyMessagePrinter"/>
+        <constructor-arg index="2" ref="prettyMessagePrinter"/>
+    </bean>
+
+
+</beans>
