@@ -17,6 +17,12 @@ public class MessagePrinter {
         return new PrettyMessagePrinter();
     }
 
+    public static MessagePrinter prettyPrinter(String format){
+        PrettyMessagePrinter printer = new PrettyMessagePrinter();
+        printer.setFormat(format);
+        return printer;
+    }
+
     public void printMessage(String source, String message) {
         System.out.println(source + " <" + message + ">");
     }

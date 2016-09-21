@@ -61,7 +61,7 @@ public class SubscriberApplication {
     }
 
     @Bean
-    public PropertySourcesPlaceholderConfigurer placeholderConfigurer(){
+    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer(){
         PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
         ClassPathResource resource = new ClassPathResource("cfg/config.properties");
         configurer.setLocation(resource);

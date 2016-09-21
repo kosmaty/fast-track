@@ -7,13 +7,29 @@
     <bean id="messagePrinter" class="com.example.subscriber.MessagePrinter" factory-method="simplePrinter"/>
     <bean id="prettyMessagePrinter" class="com.example.subscriber.PrettyMessagePrinter" factory-method="prettyPrinter">
         <qualifier value="pretty"/>
+        <constructor-arg value="${printer.message.format}" />
     </bean>
+
 
     <bean id="receiver" class="com.example.subscriber.Receiver" init-method="sayHello">
         <constructor-arg index="0" ref="messagePrinter"/>
         <constructor-arg index="1" ref="prettyMessagePrinter"/>
         <constructor-arg index="2" ref="prettyMessagePrinter"/>
     </bean>
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="location">
+            <bean class="org.springframework.core.io.ClassPathResource">
+                <constructor-arg value="cfg/config.properties" />
+            </bean>
+        </property>
+    </bean>
 
+    <bean id="valuationsApplicationListener" class="com.example.subscriber.ValuationsApplicationListener" />
 
+    <bean class="com.example.subscriber.ApplicationCloseListener">
+        <constructor-arg ref="valuationsApplicationListener"/>
+    </bean>
+    <bean class="com.example.subscriber.ApplicationStartupListener">
+        <constructor-arg ref="valuationsApplicationListener"/>
+    </bean>
 </beans>
