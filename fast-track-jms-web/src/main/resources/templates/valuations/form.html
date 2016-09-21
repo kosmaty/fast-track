@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <title>Valuation : Create</title>
+</head>
+<body>
+<h1 layout:fragment="header">Valuations : Create</h1>
+<div layout:fragment="content" class="container">
+    <form id="messageForm" th:action="@{/secure/form}" th:object="${fruitValuation}"
+          action="#" method="post">
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
+            <p th:each="error : ${#fields.errors('*')}" th:text="${error}">
+                Validation error</p>
+        </div>
+        <div class="pull-right">
+            <a th:href="@{/}" href="messages.html"> Messages </a>
+        </div>
+        <label for="fruitType">Fruit type</label>
+        <input type="text" th:field="*{fruitType}" th:class="${#fields.hasErrors('fruitType')} ? 'field-error'"/>
+        <label for="price">Price</label>
+        <input type="text" th:field="*{price}" th:class="${#fields.hasErrors('price')} ? 'field-error'"/>
+
+        <div class="form-actions">
+            <input type="submit" value="Send"/>
+        </div>
+    </form>
+</div>
+</body>
+</html>
