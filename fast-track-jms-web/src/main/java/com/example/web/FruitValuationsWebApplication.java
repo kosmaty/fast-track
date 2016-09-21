@@ -25,9 +25,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 public class FruitValuationsWebApplication {
 
     @Bean
-    public JmsTemplate myJmsTemplate(ConnectionFactory connectionFactory) {
+    public JmsTemplate jmsTemplateForTopic(ConnectionFactory connectionFactory) {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
-        jmsTemplate.setPubSubDomain(false);
+        jmsTemplate.setPubSubDomain(true);
         jmsTemplate.setMessageConverter(jacksonJmsMessageConverter());
         return jmsTemplate;
     }
@@ -48,11 +48,12 @@ public class FruitValuationsWebApplication {
     }
 
     @Bean
-    public JmsListenerContainerFactory<?> queueFactory(
+    public JmsListenerContainerFactory<?> topicFactory(
             ConnectionFactory connectionFactory,
             DefaultJmsListenerContainerFactoryConfigurer configurer) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         configurer.configure(factory, connectionFactory);
+        factory.setPubSubDomain(true);
         return factory;
     }
 

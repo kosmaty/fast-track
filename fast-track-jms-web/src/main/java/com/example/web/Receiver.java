@@ -15,7 +15,7 @@ public class Receiver {
     }
 
 
-    @JmsListener(destination = "test-queue", containerFactory = "queueFactory")
+    @JmsListener(destination = "test-queue", containerFactory = "topicFactory")
     public void receiveMessageFromQueue(FruitValuation valuation) {
         repository.addValuation(valuation);
     }

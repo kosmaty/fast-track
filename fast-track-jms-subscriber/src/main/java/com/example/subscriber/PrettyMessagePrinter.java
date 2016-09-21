@@ -1,6 +1,7 @@
 package com.example.subscriber;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,8 +10,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Qualifier("pretty")
 public class PrettyMessagePrinter extends  MessagePrinter {
+
+    @Value("${printer.message.format}")
+    private String format = "The %s says %s";
+
     @Override
     public void printMessage(String source, String message) {
-        System.out.println("The " + source + " says: " + message);
+        System.out.println(String.format(format, source, message));
     }
 }

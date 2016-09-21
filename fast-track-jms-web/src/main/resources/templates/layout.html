@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <title>Layout</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"
+          href="../../css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="navbar">
+        <div class="navbar-inner" th:with="currentUser=${#httpServletRequest.userPrincipal?.name}">
+            <div th:if="${currentUser!=null}">
+                <form class="navbar-form pull-right" th:action="@{/logout}" method="post">
+                    <input type="submit" value="Log out" />
+                </form>
+            </div>
+            <!--<div th:if="${currentUser==null}" class="pull-right">-->
+                <!--<a th:href="@{/login}" href="login">Log in</a>-->
+            <!--</div>-->
+
+
+            <ul class="nav">
+                <li><a th:href="@{/}" href="list.html"> Valuations </a></li>
+            </ul>
+            <ul class="nav pull-right" th:if="${currentUser==null}" >
+                <li><a th:href="@{/login}" href="login"> Log in </a></li>
+            </ul>
+        </div>
+    </div>
+    <h1 layout:fragment="header">Layout</h1>
+    <div layout:fragment="content">Fake content</div>
+    <div class="container">
+        <div class="pull-right">
+            <span th:text="${'Session started: ' + sessionStartTime}"></span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="pull-right">
+            <span th:text="${'Request time: ' + requestTime}"></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
