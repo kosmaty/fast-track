@@ -32,7 +32,7 @@
     <div layout:fragment="content">Fake content</div>
     <div class="container">
         <div class="pull-right">
-            <span th:text="${'Session started: ' + sessionStartTime}"></span>
+            <span th:text="${'Session started: ' + T(String).format('%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS',sessionStartTime)}"></span>
         </div>
     </div>
     <div class="container">

@@ -41,7 +41,7 @@
 
     <beans profile="prod">
         <bean id="messagePrinter" class="com.example.subscriber.MessagePrinter" factory-method="filePrinter">
-            <constructor-arg value="${file.printer.output.location}"/>
+            <constructor-arg value=""/>
         </bean>
     </beans>
 </beans>

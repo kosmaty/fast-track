@@ -2,11 +2,9 @@ package com.example.subscriber;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by kyko on 9/15/2016.
- */
 @Component
 @Qualifier("pretty")
 public class PrettyMessagePrinter extends  MessagePrinter {
