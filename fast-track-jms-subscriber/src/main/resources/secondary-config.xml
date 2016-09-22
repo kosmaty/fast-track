@@ -6,10 +6,12 @@
            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
            http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
 
+
+
     <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="tcp://127.0.0.1:61616"/>
-        <property name="userName" value="admin"/>
-        <property name="password" value="admin"/>
+        <property name="brokerURL" value="${spring.activemq.broker-url}"/>
+        <property name="userName" value="${spring.activemq.user}"/>
+        <property name="password" value="${spring.activemq.password}"/>
     </bean>
 
 

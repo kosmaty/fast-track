@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Primary
 public class MessagePrinter {
+    private String prefix = "";
+
     public static MessagePrinter simplePrinter(){
         return new MessagePrinter();
     }

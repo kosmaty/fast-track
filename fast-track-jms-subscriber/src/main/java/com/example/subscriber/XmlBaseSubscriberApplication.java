@@ -5,7 +5,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class XmlBaseSubscriberApplication {
     public static void main(String[] args) {
-        ApplicationContext context =
+        ClassPathXmlApplicationContext context =
                 new ClassPathXmlApplicationContext(new String[] {"main-context.xml"});
+        context.registerShutdownHook();
     }
 }

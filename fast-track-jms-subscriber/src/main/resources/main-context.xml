@@ -11,7 +11,9 @@
     </bean>
 
 
-    <bean id="receiver" class="com.example.subscriber.Receiver" init-method="sayHello">
+    <bean id="parentReceiver" abstract="true" init-method="sayHello" />
+
+    <bean id="receiver" class="com.example.subscriber.Receiver" parent="parentReceiver">
         <constructor-arg index="0" ref="messagePrinter"/>
         <constructor-arg index="1" ref="prettyMessagePrinter"/>
         <constructor-arg index="2" ref="prettyMessagePrinter"/>
@@ -19,7 +21,7 @@
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
         <property name="location">
             <bean class="org.springframework.core.io.ClassPathResource">
-                <constructor-arg value="cfg/config.properties" />
+                <constructor-arg value="application.properties" />
             </bean>
         </property>
     </bean>
