@@ -7,11 +7,12 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Repository
 public class ValuationRepository {
 
-    private List<FruitValuation> valuations = new ArrayList<>();
+    private List<FruitValuation> valuations = new CopyOnWriteArrayList<>();
 
     public void addValuation(FruitValuation valuation){
         valuations.add(valuation);

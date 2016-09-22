@@ -8,9 +8,10 @@
 <body>
 	<h1 layout:fragment="header">Valuations : View all</h1>
 	<div layout:fragment="content" class="container">
-		<div class="pull-right">
-			<a href="form.html" th:href="@{/secure/form}">Create Valuation</a>
-		</div>
+		<ul class="pull-right">
+			<li><a href="form.html" th:href="@{/secure/form}">Create Valuation</a></li>
+            <li><a href="bulk.html" th:href="@{/secure/bulk}">Load from file</a></li>
+		</ul>
 		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
