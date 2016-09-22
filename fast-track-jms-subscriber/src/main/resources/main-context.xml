@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <import resource="classpath:secondary-config.xml"/>
 
-    <bean id="messagePrinter" class="com.example.subscriber.MessagePrinter" factory-method="simplePrinter"/>
+
     <bean id="prettyMessagePrinter" class="com.example.subscriber.PrettyMessagePrinter" factory-method="prettyPrinter">
         <qualifier value="pretty"/>
         <constructor-arg value="${printer.message.format}" />
@@ -34,4 +34,14 @@
     <bean class="com.example.subscriber.ApplicationStartupListener">
         <constructor-arg ref="valuationsApplicationListener"/>
     </bean>
+
+    <beans profile="dev">
+        <bean id="messagePrinter" class="com.example.subscriber.MessagePrinter" factory-method="simplePrinter"/>
+    </beans>
+
+    <beans profile="prod">
+        <bean id="messagePrinter" class="com.example.subscriber.MessagePrinter" factory-method="filePrinter">
+            <constructor-arg value="${file.printer.output.location}"/>
+        </bean>
+    </beans>
 </beans>

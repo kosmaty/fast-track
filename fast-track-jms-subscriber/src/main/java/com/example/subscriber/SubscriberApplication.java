@@ -69,6 +69,7 @@ public class SubscriberApplication {
     }
 
     public static void main(String[] args) {
+        System.setProperty("spring.profiles.active", "prod");
         SpringApplication.run(SubscriberApplication.class, args);
     }
 

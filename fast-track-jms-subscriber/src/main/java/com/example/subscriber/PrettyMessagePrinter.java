@@ -15,8 +15,8 @@ public class PrettyMessagePrinter extends  MessagePrinter {
     private String format = "The %s says %s";
 
     @Override
-    public void printMessage(String source, String message) {
-        System.out.println(String.format(format, source, message));
+    protected String prepareMessage(String source, String message) {
+        return String.format(format, source, message);
     }
 
     @Value("${printer.message.format}")
